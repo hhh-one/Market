@@ -71,13 +71,13 @@ public class MainFrame extends JFrame {
         model.setRowCount(0);
 
         // 테이블 열 이름 설정
-        model.addColumn("BOARD_NUM");
-        model.addColumn("ACCOUNT_ID");
-        model.addColumn("PRODUCT_NAME");
-        model.addColumn("PRODUCT_CONTENT");
-        model.addColumn("PRICE");
-        model.addColumn("BOARD_DATE");
-        model.addColumn("PRODUCT_SELL");
+        model.addColumn("상품번호");
+        model.addColumn("판매자");
+        model.addColumn("상품명");
+        model.addColumn("상품설명");
+        model.addColumn("가격");
+        model.addColumn("등록일");
+        model.addColumn("판매여부");
 
         // 테이블 데이터 가져와서 표시
         for (MainVO board : boards) {

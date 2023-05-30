@@ -3,11 +3,13 @@ package frame;
 import java.awt.BorderLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.Image;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.BorderFactory;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -40,18 +42,25 @@ public class LoginRegisterFrame extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(400, 600);
         setLocationRelativeTo(null);
-
+        
         // 로그인 패널
         loginPanel = new JPanel();
         loginPanel.setBorder(new EmptyBorder(20, 20, 20, 20));
         loginPanel.setLayout(new GridBagLayout());
-
+        
+        // 이미지 삽입
+        ImageIcon imageIcon = new ImageIcon("C:\\Users\\taeju\\eclipse-workspace\\Market\\market.png");
+        Image image = imageIcon.getImage().getScaledInstance(300, 200, Image.SCALE_SMOOTH);
+        ImageIcon scaledImageIcon = new ImageIcon(image);
+       
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.gridx = 0;
         gbc.gridy = 0;
         gbc.anchor = GridBagConstraints.WEST;
         gbc.insets = new Insets(5, 5, 5, 5);
 
+        
+        
         JLabel usernameLabel = new JLabel("아이디:");
         loginPanel.add(usernameLabel, gbc);
 
@@ -165,12 +174,12 @@ public class LoginRegisterFrame extends JFrame {
         tabbedPane.addTab("로그인", loginPanel);
         tabbedPane.addTab("회원가입", registerPanel);
 
-        // 중앙 마켓에 오신 것을 환영합니다 문구
-        JLabel welcomeLabel = new JLabel("중앙 마켓에 오신 것을 환영합니다");
-        welcomeLabel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-        add(welcomeLabel, BorderLayout.NORTH);
-        add(tabbedPane, BorderLayout.CENTER);
-
+     // 이미지 라벨 위치
+        JLabel imageLabel = new JLabel(scaledImageIcon);
+        imageLabel.setBorder(BorderFactory.createEmptyBorder(40, 0, 0, 0));
+        add(imageLabel, BorderLayout.CENTER);
+        add(tabbedPane, BorderLayout.SOUTH);
+        
         loginDAO = new LoginDAO();
 
         loginButton.addActionListener(new ActionListener() {

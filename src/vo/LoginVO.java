@@ -8,9 +8,7 @@ public class LoginVO {
     private String EMAIL;
     private String PHONE_NUMBER;
 
-    public LoginVO() {
-      // TODO Auto-generated constructor stub
-   }
+    
     
     public LoginVO(String accountId, String password) {
         this.ACCOUNT_ID = accountId;

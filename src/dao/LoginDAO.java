@@ -13,7 +13,7 @@ import vo.LoginVO;
 
 
 public class LoginDAO {
-    private static final String DB_URL = "jdbc:oracle:thin:@localhost:1521:xe";
+    private static final String DB_URL = "jdbc:oracle:thin:@172.30.1.86:1521:xe";
     private static final String DB_USERNAME = "HR";
     private static final String DB_PASSWORD = "HR";
 

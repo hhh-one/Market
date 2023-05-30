@@ -17,13 +17,13 @@ public class LoginVO {
         this.PW = password;
     }
 
-    public LoginVO(String accountId, String password, String name, String address, String email, String phoneNumber) {
+    public LoginVO(String accountId, String password, String name, String email, String phoneNumber, String address) {
         this.ACCOUNT_ID = accountId;
-        this.ADDRESS = address;
         this.PW = password;
         this.NAME = name;
         this.EMAIL = email;
         this.PHONE_NUMBER = phoneNumber;
+        this.ADDRESS = address;
     }
 
    public String getACCOUNT_ID() {

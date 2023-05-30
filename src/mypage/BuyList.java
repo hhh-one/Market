@@ -6,24 +6,24 @@ import javax.swing.*;
 
 import board.BoardWrite;
 import vo.BoardListVO;
-import dao.LikeDAO;
+import dao.BuyListDAO;
 import frame.MyFrame;
 
 import java.io.File;
 
 
 
-public class LikeList extends JFrame {
-	private JList<BoardListVO> likeList;
+public class BuyList extends JFrame {
+	private JList<BoardListVO> buyList;
 	private DefaultListModel<BoardListVO> listModel;
 	private JLabel titleLabel;
 	private JButton backBtn;
 
-	public LikeList() {
+	public BuyList() {
 		listModel = new DefaultListModel<>();
 
 		Container c = getContentPane();
-		setTitle("찜 목록");
+		setTitle("구매 내역");
 		setSize(400, 600);
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 
@@ -32,7 +32,7 @@ public class LikeList extends JFrame {
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		setLocation((screenSize.width - frameSize.width) / 2, (screenSize.height - frameSize.height) / 2);
 
-		//Panel - 제목(찜 목록)
+		//Panel - 제목(구매 내역)
 		JPanel titlePanel = new JPanel();
 		titlePanel.setLayout(new BorderLayout());
 		titlePanel.setBackground(Color.WHITE);
@@ -65,30 +65,30 @@ public class LikeList extends JFrame {
 		});
 		
 		add(backBtn);
-		titleLabel = new JLabel("찜 목록");
+		titleLabel = new JLabel("구매 내역");
 		Font titleFont = new Font("Malgun Gothic", Font.BOLD, 16);
 		titleLabel.setFont(titleFont);
 
 		titlePanel.add(backBtn, BorderLayout.WEST);
 		titlePanel.add(titleLabel, BorderLayout.CENTER);
 
-		//Panel - 찜 목록
-		JPanel likeListPanel = new JPanel(new BorderLayout());
+		//Panel - 구매내역
+		JPanel buyListPanel = new JPanel(new BorderLayout());
 
-		likeList = new JList<>(listModel);
-		likeList.setCellRenderer(new BoardListRenderer());
-		JScrollPane scrollPane = new JScrollPane(likeList);
-		likeListPanel.add(scrollPane, BorderLayout.CENTER);
+		buyList = new JList<>(listModel);
+		buyList.setCellRenderer(new BoardListRenderer());
+		JScrollPane scrollPane = new JScrollPane(buyList);
+		buyListPanel.add(scrollPane, BorderLayout.CENTER);
 
 		//데이터 추가
 		addBoardData();
 
 		//글 목록에서 글을 더블클릭 했을 때
-		likeList.addMouseListener(new MouseAdapter() {
+		buyList.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				if (e.getClickCount() == 2) {
-					int selectedIndex = likeList.getSelectedIndex();
+					int selectedIndex = buyList.getSelectedIndex();
 
 					if (selectedIndex >= 0) {
 						//글 보기 페이지
@@ -100,7 +100,7 @@ public class LikeList extends JFrame {
 		});
 
 		c.add(titlePanel, BorderLayout.NORTH);
-		c.add(likeListPanel, BorderLayout.CENTER);
+		c.add(buyListPanel, BorderLayout.CENTER);
 		setVisible(false);
 
 	}
@@ -112,15 +112,15 @@ public class LikeList extends JFrame {
 	}
 
 	private void addBoardData() {
-		LikeDAO like = new LikeDAO();
+		BuyListDAO buy = new BuyListDAO();
 
-		like.getConnection();
+		buy.getConnection();
 
-		for (BoardListVO vo : like.showLikeList()) {
+		for (BoardListVO vo : buy.showBuyList()) {
 			listModel.addElement(vo);
 		}
 
-		like.disConnection();
+		buy.disConnection();
 	}
 
 	private static class BoardListRenderer extends DefaultListCellRenderer {

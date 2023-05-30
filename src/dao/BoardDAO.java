@@ -6,6 +6,7 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 import db_info.DBProperties;
+import frame.LoginRegisterFrame;
 import vo.BoardVO;
 
 public class BoardDAO {
@@ -41,13 +42,14 @@ public class BoardDAO {
 	//글 작성
 	public int writeBoard(BoardVO vo) {
 		int result = 0;
-		String boardWriteSql = "INSERT INTO BOARDS(BOARD_NUM, PRODUCT_NAME, PRODUCT_CONTENT, PRICE, BOARD_DATE, PRODUCT_SELL) VALUES(boards_seq.nextval, ?, ?, ?, SYSDATE, ?)";
+		String boardWriteSql = "INSERT INTO BOARDS VALUES(boards_seq.nextval, ?, ?, ?, ?, SYSDATE, ?)";
 		try {
 			pstmt = conn.prepareStatement(boardWriteSql);
-			pstmt.setString(1, vo.getProduct_name());
-			pstmt.setString(2, vo.getProduct_content());
-			pstmt.setString(3, vo.getPrice());
-			pstmt.setString(4, vo.getProduct_sell());
+			pstmt.setString(1, LoginRegisterFrame.getLoginUser().getACCOUNT_ID());
+			pstmt.setString(2, vo.getProduct_name());
+			pstmt.setString(3, vo.getProduct_content());
+			pstmt.setString(4, vo.getPrice());
+			pstmt.setString(5, vo.getProduct_sell());
 			
 			result = pstmt.executeUpdate();
 		} catch (SQLException e) {

@@ -5,6 +5,7 @@ import javax.swing.table.DefaultTableModel;
 
 import dao.MainDAO;
 import vo.MainVO;
+import board.BoardWrite;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -110,27 +111,14 @@ public class MainFrame extends JFrame {
 
     private void openWriteFrame() {
     	// 글 작성을 위한 새로운 프레임 생성
-        JFrame writeFrame = new JFrame();
-        writeFrame.setTitle("글쓰기");
-        writeFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        writeFrame.setSize(400, 300);
-        writeFrame.setLocationRelativeTo(this); // BoardFrame을 기준으로 프레임을 중앙에 배치
-
-     // 글 작성을 위한 필요한 컴포넌트 추가, 예: 텍스트 필드, 레이블, 버튼 등
+    	BoardWrite writeFrame = new BoardWrite();
 
         writeFrame.setVisible(true);
     }
 
     private void openMyPageFrame() {
-    	// 사용자 프로필 또는 "마이페이지"를 위한 새로운 프레임 생성
-    	
-        JFrame myPageFrame = new JFrame();
-        myPageFrame.setTitle("마이 페이지");
-        myPageFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        myPageFrame.setSize(400, 300);
-        myPageFrame.setLocationRelativeTo(this); // BoardFrame을 기준으로 프레임을 중앙에 배치
-
-     // 사용자 프로필을 위한 필요한 컴포넌트 추가, 예: 레이블, 버튼 등
+    	//마이페이지 프레임 생성
+        MyFrame myPageFrame = new MyFrame();
 
         myPageFrame.setVisible(true);
     }

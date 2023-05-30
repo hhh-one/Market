@@ -30,13 +30,14 @@ public class BoardWrite extends JFrame implements ActionListener {
 		vo = new BoardVO();
 		setTitle("Market");
 		setSize(400,600);
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
 		//Frame을 화면 가운데에 정렬
 		Dimension frameSize = getSize();
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		setLocation((screenSize.width - frameSize.width) / 2, (screenSize.height - frameSize.height) / 2);
 
+		
 		//컨텐트팬 - 컴포넌트 어디에 부착할지 지정
 		Container c = getContentPane();
 		c.setLayout(new FlowLayout()); //전체 레이아웃
@@ -68,7 +69,7 @@ public class BoardWrite extends JFrame implements ActionListener {
 		JPanel endPanel = new JPanel();
 		sell = new JLabel("판매 여부");
 		comboBox = new JComboBox();
-		comboBox.setModel(new DefaultComboBoxModel(new String[] {"N", "Y"}));
+		comboBox.setModel(new DefaultComboBoxModel(new String[] {"판매중", "판매완료"}));
 		btn = new JButton("등록");
 		btn.setPreferredSize(new Dimension(200, 40));
 		btn.addActionListener(this);
@@ -81,7 +82,7 @@ public class BoardWrite extends JFrame implements ActionListener {
 		c.add(contentPanel);
 		c.add(endPanel);
 
-		setVisible(true);
+		setVisible(false);
 	}
 
 	@Override
@@ -106,4 +107,5 @@ public class BoardWrite extends JFrame implements ActionListener {
 			dao.disConnection();
 		}
 	}
+
 }

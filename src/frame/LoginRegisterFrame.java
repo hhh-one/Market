@@ -35,6 +35,7 @@ public class LoginRegisterFrame extends JFrame {
     private JTabbedPane tabbedPane;
     
     private LoginVO loginVO;
+    private static LoginVO loginUser;
     private LoginDAO loginDAO;
 
     public LoginRegisterFrame() {
@@ -188,10 +189,13 @@ public class LoginRegisterFrame extends JFrame {
                 String username = usernameField.getText();
                 String password = new String(passwordField.getPassword());
 
-                LoginVO loginVO = new LoginVO(username, password);
+                loginVO = new LoginVO(username, password);
                 if (loginDAO.check(loginVO)) {
                     JOptionPane.showMessageDialog(LoginRegisterFrame.this, "로그인 성공");
-
+                    
+                    //로그인 성공 -> 로그인계정 저장
+                    setLoginUser(new LoginVO(username, password));
+                    
                      //로그인 성공 시 BoardFrame 열기
                    MainDAO boardDAO = new MainDAO(DBProperties.URL, DBProperties.UID, DBProperties.UPW);
 
@@ -229,4 +233,12 @@ public class LoginRegisterFrame extends JFrame {
             }
         });
     }
+
+	public static LoginVO getLoginUser() {
+		return loginUser;
+	}
+
+	public static void setLoginUser(LoginVO loginUser) {
+		LoginRegisterFrame.loginUser = loginUser;
+	}
 }

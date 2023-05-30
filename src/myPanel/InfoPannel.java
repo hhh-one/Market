@@ -5,10 +5,11 @@ import java.awt.event.*;
 import javax.swing.*;
 
 import dao.MyHomeDAO;
+import frame.LoginRegisterFrame;
 import vo.MyHomeVO;
 
 public class InfoPannel extends JPanel{
-	private MyHomeVO vo = new MyHomeDAO().getHome("AAA");
+	private MyHomeVO vo = new MyHomeDAO().getHome(LoginRegisterFrame.getLoginUser().getACCOUNT_ID());
 	
 	private JButton backBtn = new JButton("<");
 	private JButton btnNumber;

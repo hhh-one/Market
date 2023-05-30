@@ -7,6 +7,7 @@ import javax.swing.*;
 import board.BoardWrite;
 import vo.BoardListVO;
 import dao.LikeDAO;
+import frame.MyFrame;
 
 import java.io.File;
 
@@ -24,7 +25,7 @@ public class LikeList extends JFrame {
 		Container c = getContentPane();
 		setTitle("찜 목록");
 		setSize(400, 600);
-		setDefaultCloseOperation(EXIT_ON_CLOSE);
+		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 
 		//Frame을 화면 가운데에 정렬
 		Dimension frameSize = getSize();
@@ -51,7 +52,19 @@ public class LikeList extends JFrame {
 		backBtn.setBackground(titlePanel.getBackground()); //버튼색 제거
 		backBtn.setBorder(null); // 버튼 안의 이미지 테두리 제거
 		backBtn.setBorderPainted(false); // 버튼의 테두리 제거
-
+		
+		backBtn.setBounds(10, 20, 50, 50);
+		setBtn(backBtn);
+		backBtn.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				MyFrame my = new MyFrame();
+				my.setVisible(true);
+				setVisible(false);
+			}
+		});
+		
+		add(backBtn);
 		titleLabel = new JLabel("찜 목록");
 		Font titleFont = new Font("Malgun Gothic", Font.BOLD, 16);
 		titleLabel.setFont(titleFont);
@@ -88,7 +101,7 @@ public class LikeList extends JFrame {
 
 		c.add(titlePanel, BorderLayout.NORTH);
 		c.add(likeListPanel, BorderLayout.CENTER);
-		setVisible(true);
+		setVisible(false);
 
 	}
 
@@ -128,5 +141,12 @@ public class LikeList extends JFrame {
 			setBorder(BorderFactory.createLineBorder(Color.GRAY));
 			return this;
 		}
+	}
+	
+	private void setBtn(JButton btn) {
+		btn.setHorizontalAlignment(JButton.LEFT);
+		btn.setBorderPainted(false);
+		btn.setContentAreaFilled(false); 
+		btn.setFocusPainted(false);
 	}
 }

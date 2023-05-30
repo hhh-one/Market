@@ -7,10 +7,12 @@ import java.awt.event.ActionListener;
 import javax.swing.*;
 
 import dao.MyHomeDAO;
+import frame.LoginRegisterFrame;
+import mypage.*;
 import vo.MyHomeVO;
 
 public class HomePanel extends JPanel {
-	private MyHomeVO vo = new MyHomeDAO().getHome("AAA");
+	private MyHomeVO vo = new MyHomeDAO().getHome(LoginRegisterFrame.getLoginUser().getACCOUNT_ID());
 	
 	private JLabel Name;
 	private JLabel E_Mail;
@@ -25,7 +27,6 @@ public class HomePanel extends JPanel {
 	private JButton LikeBtn = new JButton("❤️ 찜 목록");
 	private JButton SellBtn = new JButton("📃 판매 내역");
 	private JButton BuyBtn = new JButton("👜 구매 내역");
-	private JButton FinancialBtn = new JButton("📕 가계부");
 	private JButton InfoBtn = new JButton("⚙️");
 	
 	private Font f1,f2;
@@ -63,8 +64,9 @@ public class HomePanel extends JPanel {
 		setBtn(btnLike);
 		btnLike.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				CardLayout Layout = (CardLayout) getParent().getLayout();
-				Layout.show(getParent(), "Like");
+				LikeList likeList = new LikeList();
+				likeList.setVisible(true);
+				setVisible(false);
 			}
 		});
 		btnLike.setBounds(35, 250, 130, 30);
@@ -74,8 +76,8 @@ public class HomePanel extends JPanel {
 		setBtn(btnSell);
 		btnSell.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				CardLayout Layout = (CardLayout) getParent().getLayout();
-				Layout.show(getParent(), "Sell");
+				SellList sellList = new SellList();
+				sellList.setVisible(true);
 			}
 		});
 		btnSell.setBounds(35, 310, 130, 30);
@@ -87,8 +89,8 @@ public class HomePanel extends JPanel {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				CardLayout Layout = (CardLayout) getParent().getLayout();
-				Layout.show(getParent(), "Buy");
+				BuyList buyList = new BuyList();
+				buyList.setVisible(true);
 			}
 		});
 		btnBuy.setBounds(35, 370, 130, 30);

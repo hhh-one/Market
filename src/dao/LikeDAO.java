@@ -8,6 +8,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 import db_info.DBProperties;
+import frame.LoginRegisterFrame;
 import vo.BoardListVO;
 
 import java.util.ArrayList;
@@ -49,7 +50,7 @@ public class LikeDAO {
 
 		try {
 			pstmt = conn.prepareStatement(showLikeSql);
-			pstmt.setString(1, "2");
+			pstmt.setString(1, LoginRegisterFrame.getLoginUser().getACCOUNT_ID());
 			rs = pstmt.executeQuery();
 
 			while(rs.next()) {

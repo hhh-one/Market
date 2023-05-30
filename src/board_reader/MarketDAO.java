@@ -2,13 +2,18 @@ package board_reader;
 
 import javax.swing.*;
 
+import dao.MainDAO;
 import db_info.DBProperties;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.*;
- // 게시글 페이지, 댓글 페이지, 찜하기, 댓글 작성하는 곳?,
+
+import frame.LoginRegisterFrame;
+import frame.MainFrame;
+
+// 게시글 페이지, 댓글 페이지, 찜하기, 댓글 작성하는 곳?,
 public class MarketDAO extends JFrame implements ActionListener {
     // 게시글 변수
     private String url = DBProperties.URL;
@@ -32,6 +37,7 @@ public class MarketDAO extends JFrame implements ActionListener {
     private JButton returnButton;
     private JFrame parentFrame; // 게시글 페이지 프레임
     private JPanel commentPanel; // 댓글이 표시될 패널
+    private MainFrame mainFrame;
 
 
     public MarketDAO() {
@@ -40,6 +46,9 @@ public class MarketDAO extends JFrame implements ActionListener {
         } catch (Exception e) {
             System.out.println("CLASS FOR NAME ERR");
         }
+    }
+    public MarketDAO(MainFrame mainFrame) {
+        this.mainFrame = mainFrame;
     }
 
     // 게시글 페이지
@@ -114,18 +123,35 @@ public class MarketDAO extends JFrame implements ActionListener {
             commentButton.setBounds(250, 480, 100, 30);
             add(commentButton);
 
+            JButton backButton = new JButton("뒤로가기");
+            backButton.setBounds(280, 20, 100, 30);
+            add(backButton);
+
+            backButton.addActionListener(new ActionListener() {
+                public void actionPerformed(ActionEvent e) {
+                    // MainFrame 클래스의 인스턴스 생성
+                    MainDAO mainDAO = new MainDAO(DBProperties.URL, DBProperties.UID, DBProperties.UPW);
+                   frame.MainFrame mainFrame = new frame.MainFrame(mainDAO);
+                    mainFrame.setVisible(true);
+
+                    // 현재 프레임 종료
+                    dispose();
+                }
+            });
+
+
             // 게시글 데이터 표시
             if (resultSet.next()) {
                 titleLabel.setText("제목: " + resultSet.getString("product_name"));
                 priceLabel.setText("가격: " + resultSet.getString("price") + "원");
                 idLabel.setText("작성자: " + resultSet.getString("account_id"));
                 dateLabel.setText("등록날짜: " + resultSet.getString("board_date"));
-                locationLabel.setText("지역: " + resultSet.getString("city"));
                 sellLabel.setText("판매여부: " + resultSet.getString("product_sell"));
                 descriptionArea.setText(resultSet.getString("product_content"));
             } else {
                 JOptionPane.showMessageDialog(this, "게시글을 찾을 수 없습니다.");
             }
+            setLocationRelativeTo(null);
 
 
             // 찜하기 버튼 클릭
@@ -139,7 +165,7 @@ public class MarketDAO extends JFrame implements ActionListener {
                         conn = DriverManager.getConnection(url, uid, upw);
                         String checkSql = "SELECT * FROM LIKES WHERE ACCOUNT_ID = ? AND BOARD_NUM = ?";
                         PreparedStatement checkStatement = conn.prepareStatement(checkSql);
-                        checkStatement.setString(1, "chanhan"); // 전달 받은 ID로 입력
+                        checkStatement.setString(1, LoginRegisterFrame.getLoginUser().getACCOUNT_ID()); // 전달 받은 ID로 입력
                         checkStatement.setString(2, pull);
                         ResultSet checkResult = checkStatement.executeQuery();
 
@@ -148,7 +174,7 @@ public class MarketDAO extends JFrame implements ActionListener {
                         } else {
                             String insertSql = "INSERT INTO LIKES VALUES (?, ?)";
                             PreparedStatement insertStatement = conn.prepareStatement(insertSql);
-                            insertStatement.setString(1, "chanhan");
+                            insertStatement.setString(1, LoginRegisterFrame.getLoginUser().getACCOUNT_ID());
                             insertStatement.setString(2, pull);
                             int rowsInserted = insertStatement.executeUpdate();
 
@@ -213,6 +239,10 @@ public class MarketDAO extends JFrame implements ActionListener {
         infoPanel.add(productNameLabel, BorderLayout.NORTH);
         infoPanel.add(priceLabel, BorderLayout.CENTER);
         getCommentsFrame.add(infoPanel, BorderLayout.NORTH);
+
+        // 댓글을 표기할 패널 초기화
+        commentPanel = new JPanel();
+        commentPanel.setLayout(new BoxLayout(commentPanel, BoxLayout.Y_AXIS));
 
         try {
             conn = DriverManager.getConnection(url, uid, upw);
@@ -312,13 +342,10 @@ public class MarketDAO extends JFrame implements ActionListener {
             e.printStackTrace();
             JOptionPane.showMessageDialog(getCommentsFrame, "오류가 발생했습니다.", "오류", JOptionPane.ERROR_MESSAGE);
         }
-
+        getCommentsFrame.setLocationRelativeTo(null);
         getCommentsFrame.setVisible(true);
         setVisible(false);
     }
-
-
-
 
     // 댓글 페이지 (쓰기)
     public void actionPerformed(ActionEvent e) {
@@ -329,8 +356,8 @@ public class MarketDAO extends JFrame implements ActionListener {
             String comment = commentText.getText();
             String sql = "INSERT INTO COMMENTS VALUES (COMMENTS_SEQ.NEXTVAL, ?, ?, ?, sysdate)";
             PreparedStatement statement = conn.prepareStatement(sql);
-            statement.setString(1, comment); // 상품번호 Pull
-            statement.setString(2, "chanhan"); // 아이디 임시값
+            statement.setString(1, MainFrame.getBoardUser().getBOARD_NUM()); // 상품번호 Pull
+            statement.setString(2, LoginRegisterFrame.getLoginUser().getACCOUNT_ID());
             statement.setString(3, comment); // 댓글
             statement.executeUpdate();
             statement.close();
@@ -341,6 +368,11 @@ public class MarketDAO extends JFrame implements ActionListener {
             newCommentLabel.setText("내용 : " + comment);
             commentPanel.add(newCommentLabel);
             commentPanel.add(Box.createRigidArea(new Dimension(0, 10))); // 댓글 간 간격 조정
+
+            JOptionPane.showMessageDialog(getCommentsFrame, "댓글이 입력되었습니다.");
+            getCommentsFrame.dispose(); // 댓글 페이지 닫기
+            getComments(MainFrame.getBoardUser().getBOARD_NUM());
+
 
             conn.close();
         } catch (Exception ex) {

@@ -1,4 +1,4 @@
-package board_reader;
+package db_info;
 
 public class DBProperties {
 

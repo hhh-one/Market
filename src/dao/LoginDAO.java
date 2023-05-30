@@ -8,21 +8,19 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import db_info.DBProperties;
 import vo.LoginVO;
 
 
 
 public class LoginDAO {
-    private static final String DB_URL = "jdbc:oracle:thin:@172.30.1.86:1521:xe";
-    private static final String DB_USERNAME = "HR";
-    private static final String DB_PASSWORD = "HR";
 
     List<LoginVO> list = new ArrayList<>();
     
     public boolean check(LoginVO loginVO) {
         String query = "SELECT * FROM ACCOUNTS WHERE ACCOUNT_ID = ? AND PW = ?";
 
-        try (Connection conn = DriverManager.getConnection(DB_URL, DB_USERNAME, DB_PASSWORD);
+        try (Connection conn = DriverManager.getConnection(DBProperties.URL, DBProperties.UID, DBProperties.UPW);
              PreparedStatement pstmt = conn.prepareStatement(query)) {
             pstmt.setString(1, loginVO.getACCOUNT_ID());
             pstmt.setString(2, loginVO.getPW());
@@ -40,7 +38,7 @@ public class LoginDAO {
     public boolean register(LoginVO loginVO) {
         String query = "INSERT INTO ACCOUNTS (ACCOUNT_ID, PW, NAME, EMAIL, PHONE_NUMBER, ADDRESS) VALUES (?, ?, ?, ?, ?, ?)";
 
-        try (Connection conn = DriverManager.getConnection(DB_URL, DB_USERNAME, DB_PASSWORD);
+        try (Connection conn = DriverManager.getConnection(DBProperties.URL, DBProperties.UID, DBProperties.UPW);
              PreparedStatement pstmt = conn.prepareStatement(query)) {
            pstmt.setString(1, loginVO.getACCOUNT_ID());
             pstmt.setString(2, loginVO.getPW());
@@ -59,7 +57,7 @@ public class LoginDAO {
     }
 
     public boolean checkUsernameExists(String username) {
-        try (Connection conn = DriverManager.getConnection(DB_URL, DB_USERNAME, DB_PASSWORD);
+        try (Connection conn = DriverManager.getConnection(DBProperties.URL, DBProperties.UID, DBProperties.UPW);
              PreparedStatement stmt = conn.prepareStatement("SELECT COUNT(*) FROM ACCOUNTS WHERE ACCOUNT_ID = ?")) {
             stmt.setString(1, username);
 

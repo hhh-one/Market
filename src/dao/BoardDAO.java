@@ -5,12 +5,10 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
+import db_info.DBProperties;
 import vo.BoardVO;
 
 public class BoardDAO {
-	private String url = "jdbc:oracle:thin:@localhost:1521:xe";
-	private String uid = "HR";
-	private String upw = "HR";
 	
 	private Connection conn = null;
 	private PreparedStatement pstmt = null;
@@ -26,7 +24,7 @@ public class BoardDAO {
 	//oracle 연결
 	public void getConnection() {
 		try {
-			conn = DriverManager.getConnection(url, uid, upw);
+			conn = DriverManager.getConnection(DBProperties.URL, DBProperties.UID, DBProperties.UPW);
 		} catch (Exception e) {
 			System.out.println("CONNECTION ERR");
 		}

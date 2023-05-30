@@ -20,6 +20,7 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
 import dao.MyHomeDAO;
+import db_info.DBProperties;
 import mypage.*;
 import vo.MyHomeVO;
 

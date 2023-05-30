@@ -20,7 +20,7 @@ import javax.swing.border.EmptyBorder;
 
 import dao.LoginDAO;
 import dao.MainDAO;
-import login.DBProperties;
+import db_info.DBProperties;
 import vo.LoginVO;
 
 public class LoginRegisterFrame extends JFrame {
@@ -184,7 +184,7 @@ public class LoginRegisterFrame extends JFrame {
                     JOptionPane.showMessageDialog(LoginRegisterFrame.this, "로그인 성공");
 
                      //로그인 성공 시 BoardFrame 열기
-                   MainDAO boardDAO = new MainDAO(DBProperties.DB_URL, DBProperties.DB_USERNAME, DBProperties.DB_PASSWORD);
+                   MainDAO boardDAO = new MainDAO(DBProperties.URL, DBProperties.UID, DBProperties.UPW);
 
                    MainFrame boardFrame = new MainFrame(boardDAO); // 수정
                    boardFrame.setVisible(true);

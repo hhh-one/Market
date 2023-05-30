@@ -22,6 +22,16 @@ public class MainFrame extends JFrame {
     private MarketDAO marketDAO;
     private JFrame myPageFrame;
 
+    public static MainVO getBoardUser() {
+        return boardUser;
+    }
+
+    public static void setBoardUser(MainVO boardUser) {
+        MainFrame.boardUser = boardUser;
+    }
+
+    private static MainVO boardUser;
+
     public MainFrame(MainDAO boardDAO) {
         this.mainDAO = boardDAO;
         this.marketDAO = new MarketDAO();
@@ -124,6 +134,7 @@ public class MainFrame extends JFrame {
     }
 
     private void openPostFrame(MainVO board) {
+        boardUser = board;
         if (postFrame == null) {
             postFrame = new JFrame();
             postFrame.setTitle("글보기");

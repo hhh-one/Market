@@ -10,6 +10,7 @@ import javax.swing.*;
 import javax.swing.event.*;
 
 import dao.MyHomeDAO;
+import db_info.DBProperties;
 import mypage.*;
 import vo.MyHomeVO;
 // 번호 변경 패널

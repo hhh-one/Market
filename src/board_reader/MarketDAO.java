@@ -1,6 +1,9 @@
 package board_reader;
 
 import javax.swing.*;
+
+import db_info.DBProperties;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;

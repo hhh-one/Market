@@ -7,14 +7,12 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
+import db_info.DBProperties;
 import vo.BoardListVO;
 
 import java.util.ArrayList;
 
 public class LikeDAO {
-	private String url = "jdbc:oracle:thin:@localhost:1521:xe";
-	private String uid = "HR";
-	private String upw = "HR";
 
 	private Connection conn = null;
 	private PreparedStatement pstmt = null;
@@ -31,7 +29,7 @@ public class LikeDAO {
 	//oracle 연결
 	public void getConnection() {
 		try {
-			conn = DriverManager.getConnection(url, uid, upw);
+			conn = DriverManager.getConnection(DBProperties.URL, DBProperties.UID, DBProperties.UPW);
 		} catch (Exception e) {
 			System.out.println("CONNECTION ERR");
 		}

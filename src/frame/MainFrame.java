@@ -10,15 +10,21 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
+import board_reader.MarketDAO;
+
 
 public class MainFrame extends JFrame {
     private JTable table;
     private DefaultTableModel model;
     private MainDAO mainDAO;
     private JFrame postFrame; // "Post" 프레임을 저장하기 위한 멤버 변수 선언
+    private MarketDAO marketDAO;
+    private JFrame myPageFrame;
 
     public MainFrame(MainDAO boardDAO) {
         this.mainDAO = boardDAO;
+        this.marketDAO = new MarketDAO();
+
 
         setTitle("메인 페이지");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -134,19 +140,24 @@ public class MainFrame extends JFrame {
             postFrame = new JFrame();
             postFrame.setTitle("글보기");
             postFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-            postFrame.setSize(400, 300);
+            postFrame.setSize(400, 600);
             postFrame.setLocationRelativeTo(this); // BoardFrame을 기준으로 프레임을 중앙에 배치
         }
 
-        //  // 기존 프레임의 컴포넌트 제거
+        JFrame aa = new JFrame();
+
+        // 기존 프레임의 컴포넌트 제거
         postFrame.getContentPane().removeAll();
 
-        // // 선택된 게시물을 표시하기 위한 필요한 컴포넌트 추가, 예: 레이블, 버튼 등
-        // 'board' 매개변수를 사용하여 선택된 게시물의 데이터로 프레임을 채움
+        // MarketDAO의 getMarket 메서드 실행
+        marketDAO.getMarket(board.getBOARD_NUM()); // getMarket 메서드를 호출하여 데이터베이스 정보를 가져옴
 
+        // 가져온 데이터베이스 정보를 사용하여 프레임을 채움
+        // 예를 들어, 레이블을 생성하여 가져온 정보를 표시할 수 있습니다.
         postFrame.revalidate();
         postFrame.repaint();
-        postFrame.setVisible(true);
+        postFrame.setVisible(false);
+
     }
 
     public static void main(String[] args) {

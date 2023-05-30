@@ -2,13 +2,17 @@ package board_reader;
 
 import javax.swing.*;
 
+import dao.MainDAO;
 import db_info.DBProperties;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.*;
- // 게시글 페이지, 댓글 페이지, 찜하기, 댓글 작성하는 곳?,
+
+import frame.MainFrame;
+
+// 게시글 페이지, 댓글 페이지, 찜하기, 댓글 작성하는 곳?,
 public class MarketDAO extends JFrame implements ActionListener {
     // 게시글 변수
     private String url = DBProperties.URL;
@@ -32,6 +36,7 @@ public class MarketDAO extends JFrame implements ActionListener {
     private JButton returnButton;
     private JFrame parentFrame; // 게시글 페이지 프레임
     private JPanel commentPanel; // 댓글이 표시될 패널
+    private MainFrame mainFrame;
 
 
     public MarketDAO() {
@@ -40,6 +45,9 @@ public class MarketDAO extends JFrame implements ActionListener {
         } catch (Exception e) {
             System.out.println("CLASS FOR NAME ERR");
         }
+    }
+    public MarketDAO(MainFrame mainFrame) {
+        this.mainFrame = mainFrame;
     }
 
     // 게시글 페이지
@@ -114,18 +122,35 @@ public class MarketDAO extends JFrame implements ActionListener {
             commentButton.setBounds(250, 480, 100, 30);
             add(commentButton);
 
+            JButton backButton = new JButton("뒤로가기");
+            backButton.setBounds(280, 20, 100, 30);
+            add(backButton);
+
+            backButton.addActionListener(new ActionListener() {
+                public void actionPerformed(ActionEvent e) {
+                    // MainFrame 클래스의 인스턴스 생성
+                    MainDAO mainDAO = new MainDAO(DBProperties.URL, DBProperties.UID, DBProperties.UPW);
+                   frame.MainFrame mainFrame = new frame.MainFrame(mainDAO);
+                    mainFrame.setVisible(true);
+
+                    // 현재 프레임 종료
+                    dispose();
+                }
+            });
+
+
             // 게시글 데이터 표시
             if (resultSet.next()) {
                 titleLabel.setText("제목: " + resultSet.getString("product_name"));
                 priceLabel.setText("가격: " + resultSet.getString("price") + "원");
                 idLabel.setText("작성자: " + resultSet.getString("account_id"));
                 dateLabel.setText("등록날짜: " + resultSet.getString("board_date"));
-                locationLabel.setText("지역: " + resultSet.getString("city"));
                 sellLabel.setText("판매여부: " + resultSet.getString("product_sell"));
                 descriptionArea.setText(resultSet.getString("product_content"));
             } else {
                 JOptionPane.showMessageDialog(this, "게시글을 찾을 수 없습니다.");
             }
+            setLocationRelativeTo(null);
 
 
             // 찜하기 버튼 클릭
@@ -312,12 +337,10 @@ public class MarketDAO extends JFrame implements ActionListener {
             e.printStackTrace();
             JOptionPane.showMessageDialog(getCommentsFrame, "오류가 발생했습니다.", "오류", JOptionPane.ERROR_MESSAGE);
         }
-
+        getCommentsFrame.setLocationRelativeTo(null);
         getCommentsFrame.setVisible(true);
         setVisible(false);
     }
-
-
 
 
     // 댓글 페이지 (쓰기)

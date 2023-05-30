@@ -28,7 +28,7 @@ public class MyHomeDAO { // 원래 AccountDAO : 테스트위해 임시 제작
 		
 		MyHomeVO vo = new MyHomeVO();
 		
-		String sql = "SELECT * FROM account WHERE account_id = ?";
+		String sql = "SELECT * FROM accounts WHERE account_id = ?";
 		
 		Connection conn = null;
 		PreparedStatement psmt = null;
@@ -47,7 +47,7 @@ public class MyHomeDAO { // 원래 AccountDAO : 테스트위해 임시 제작
 				String account_id = rs.getString("account_id");
 				String pw = rs.getString("pw");
 				String name = rs.getString("name");
-				String e_mail = rs.getString("e_mail");
+				String e_mail = rs.getString("email");
 				String phone_number = rs.getString("phone_number");
 				String address = rs.getString("ADDRESS");
 				

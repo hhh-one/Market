@@ -7,10 +7,11 @@ import javax.swing.*;
 import dao.MyHomeDAO;
 import vo.MyHomeVO;
 import myPanel.*;
+import mypage.LikeList;
 
 public class MyFrame extends JFrame {
 	
-	public MyHomeVO vo = new MyHomeDAO().getHome("AAA");
+	public MyHomeVO vo = new MyHomeDAO().getHome(LoginRegisterFrame.getLoginUser().getACCOUNT_ID());
 	
 	public MyFrame() {
 		setSize(400, 600);

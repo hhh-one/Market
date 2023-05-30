@@ -5,25 +5,23 @@ import java.awt.event.*;
 import javax.swing.*;
 
 import board.BoardWrite;
-import vo.BoardListVO;
-import dao.LikeDAO;
+import dao.SellListDAO;
 import frame.MyFrame;
+import vo.BoardListVO;
 
 import java.io.File;
 
-
-
-public class LikeList extends JFrame {
-	private JList<BoardListVO> likeList;
+public class SellList extends JFrame {
+	private JList<BoardListVO> sellList;
 	private DefaultListModel<BoardListVO> listModel;
 	private JLabel titleLabel;
 	private JButton backBtn;
 
-	public LikeList() {
+	public SellList() {
 		listModel = new DefaultListModel<>();
 
 		Container c = getContentPane();
-		setTitle("찜 목록");
+		setTitle("판매 내역");
 		setSize(400, 600);
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 
@@ -32,7 +30,7 @@ public class LikeList extends JFrame {
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		setLocation((screenSize.width - frameSize.width) / 2, (screenSize.height - frameSize.height) / 2);
 
-		//Panel - 제목(찜 목록)
+		//Panel - 제목(판매 내역)
 		JPanel titlePanel = new JPanel();
 		titlePanel.setLayout(new BorderLayout());
 		titlePanel.setBackground(Color.WHITE);
@@ -72,23 +70,23 @@ public class LikeList extends JFrame {
 		titlePanel.add(backBtn, BorderLayout.WEST);
 		titlePanel.add(titleLabel, BorderLayout.CENTER);
 
-		//Panel - 찜 목록
-		JPanel likeListPanel = new JPanel(new BorderLayout());
+		//Panel - 판매 내역
+		JPanel sellListPanel = new JPanel(new BorderLayout());
 
-		likeList = new JList<>(listModel);
-		likeList.setCellRenderer(new BoardListRenderer());
-		JScrollPane scrollPane = new JScrollPane(likeList);
-		likeListPanel.add(scrollPane, BorderLayout.CENTER);
+		sellList = new JList<>(listModel);
+		sellList.setCellRenderer(new BoardListRenderer());
+		JScrollPane scrollPane = new JScrollPane(sellList);
+		sellListPanel.add(scrollPane, BorderLayout.CENTER);
 
 		//데이터 추가
 		addBoardData();
 
 		//글 목록에서 글을 더블클릭 했을 때
-		likeList.addMouseListener(new MouseAdapter() {
+		sellList.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				if (e.getClickCount() == 2) {
-					int selectedIndex = likeList.getSelectedIndex();
+					int selectedIndex = sellList.getSelectedIndex();
 
 					if (selectedIndex >= 0) {
 						//글 보기 페이지
@@ -100,7 +98,7 @@ public class LikeList extends JFrame {
 		});
 
 		c.add(titlePanel, BorderLayout.NORTH);
-		c.add(likeListPanel, BorderLayout.CENTER);
+		c.add(sellListPanel, BorderLayout.CENTER);
 		setVisible(false);
 
 	}
@@ -112,15 +110,15 @@ public class LikeList extends JFrame {
 	}
 
 	private void addBoardData() {
-		LikeDAO like = new LikeDAO();
+		SellListDAO sell = new SellListDAO();
 
-		like.getConnection();
+		sell.getConnection();
 
-		for (BoardListVO vo : like.showLikeList()) {
+		for (BoardListVO vo : sell.showSellList()) {
 			listModel.addElement(vo);
 		}
 
-		like.disConnection();
+		sell.disConnection();
 	}
 
 	private static class BoardListRenderer extends DefaultListCellRenderer {

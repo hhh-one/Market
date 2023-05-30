@@ -165,7 +165,7 @@ public class MarketDAO extends JFrame implements ActionListener {
                         conn = DriverManager.getConnection(url, uid, upw);
                         String checkSql = "SELECT * FROM LIKES WHERE ACCOUNT_ID = ? AND BOARD_NUM = ?";
                         PreparedStatement checkStatement = conn.prepareStatement(checkSql);
-                        checkStatement.setString(1, "chanhan"); // 전달 받은 ID로 입력
+                        checkStatement.setString(1, LoginRegisterFrame.getLoginUser().getACCOUNT_ID()); // 전달 받은 ID로 입력
                         checkStatement.setString(2, pull);
                         ResultSet checkResult = checkStatement.executeQuery();
 
@@ -174,7 +174,7 @@ public class MarketDAO extends JFrame implements ActionListener {
                         } else {
                             String insertSql = "INSERT INTO LIKES VALUES (?, ?)";
                             PreparedStatement insertStatement = conn.prepareStatement(insertSql);
-                            insertStatement.setString(1, "chanhan");
+                            insertStatement.setString(1, LoginRegisterFrame.getLoginUser().getACCOUNT_ID());
                             insertStatement.setString(2, pull);
                             int rowsInserted = insertStatement.executeUpdate();
 

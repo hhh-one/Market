@@ -13,7 +13,7 @@ public class MainTest {
 
             public void run() {
                 MarketDAO marketDAO = new MarketDAO(); // DAO 객체 생성
-                marketDAO.getMarket("1"); // getMarket 메서드 호출
+                marketDAO.getMarket("2"); // getMarket 메서드 호출
             }
         });
     }

@@ -106,4 +106,5 @@ public class BoardWrite extends JFrame implements ActionListener {
 			dao.disConnection();
 		}
 	}
+
 }

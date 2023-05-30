@@ -10,6 +10,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.*;
 
+import frame.LoginRegisterFrame;
 import frame.MainFrame;
 
 // 게시글 페이지, 댓글 페이지, 찜하기, 댓글 작성하는 곳?,
@@ -239,6 +240,10 @@ public class MarketDAO extends JFrame implements ActionListener {
         infoPanel.add(priceLabel, BorderLayout.CENTER);
         getCommentsFrame.add(infoPanel, BorderLayout.NORTH);
 
+        // 댓글을 표기할 패널 초기화
+        commentPanel = new JPanel();
+        commentPanel.setLayout(new BoxLayout(commentPanel, BoxLayout.Y_AXIS));
+
         try {
             conn = DriverManager.getConnection(url, uid, upw);
             String sql = "SELECT COMMENT_NUM, C.ACCOUNT_ID, COMMENT_CONTENT, COMMENT_DATE, B.PRODUCT_NAME, B.PRICE, B.PRODUCT_SELL FROM COMMENTS C JOIN BOARDS B ON C.BOARD_NUM = B.BOARD_NUM WHERE B.BOARD_NUM = ?";
@@ -342,7 +347,6 @@ public class MarketDAO extends JFrame implements ActionListener {
         setVisible(false);
     }
 
-
     // 댓글 페이지 (쓰기)
     public void actionPerformed(ActionEvent e) {
         Connection conn = null;
@@ -352,8 +356,8 @@ public class MarketDAO extends JFrame implements ActionListener {
             String comment = commentText.getText();
             String sql = "INSERT INTO COMMENTS VALUES (COMMENTS_SEQ.NEXTVAL, ?, ?, ?, sysdate)";
             PreparedStatement statement = conn.prepareStatement(sql);
-            statement.setString(1, comment); // 상품번호 Pull
-            statement.setString(2, "chanhan"); // 아이디 임시값
+            statement.setString(1, MainFrame.getBoardUser().getBOARD_NUM()); // 상품번호 Pull
+            statement.setString(2, LoginRegisterFrame.getLoginUser().getACCOUNT_ID());
             statement.setString(3, comment); // 댓글
             statement.executeUpdate();
             statement.close();
@@ -364,6 +368,11 @@ public class MarketDAO extends JFrame implements ActionListener {
             newCommentLabel.setText("내용 : " + comment);
             commentPanel.add(newCommentLabel);
             commentPanel.add(Box.createRigidArea(new Dimension(0, 10))); // 댓글 간 간격 조정
+
+            JOptionPane.showMessageDialog(getCommentsFrame, "댓글이 입력되었습니다.");
+            getCommentsFrame.dispose(); // 댓글 페이지 닫기
+            getComments(MainFrame.getBoardUser().getBOARD_NUM());
+
 
             conn.close();
         } catch (Exception ex) {

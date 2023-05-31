@@ -44,7 +44,7 @@ public class SellListDAO {
 	
 	public List<BoardListVO> showSellList() {
 		List<BoardListVO> boardList = new ArrayList<>();
-		String showSellListSql = "SELECT * FROM BOARDS B JOIN ACCOUNTS A ON B.ACCOUNT_ID = A.ACCOUNT_ID WHERE BOARD_NUM IN (SELECT BOARD_NUM FROM SELL_LIST WHERE ACCOUNT_ID = ?)";
+		String showSellListSql = "SELECT * FROM BOARDS B JOIN ACCOUNTS A ON B.ACCOUNT_ID = A.ACCOUNT_ID WHERE A.ACCOUNT_ID = ?";
 
 		try {
 			pstmt = conn.prepareStatement(showSellListSql);

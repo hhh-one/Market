@@ -130,7 +130,7 @@ public class SellList extends JFrame {
 
 				String productName = "<html><span style='font-size: 14pt;'><b>" + post.getProduct_name() + "</b></span>";
 				String name = "<font color='gray'>" + post.getName() + "</font>";
-				String price = "<html><b>" + post.getPrice() + "원</b></html>";
+				String price = "<html><pre><b>" + post.getPrice() + "원</b>&nbsp;&nbsp;&nbsp;&nbsp;" + post.getProduct_sell() + "</pre></html>";
 
 				setText(productName + "<br>" + name + "<br>" + price);
 			}

@@ -363,11 +363,11 @@ public class MarketDAO extends JFrame implements ActionListener {
             statement.close();
 
             // 댓글을 추가한 후 화면에 표시합니다.
-            JLabel newCommentLabel = new JLabel();
-            newCommentLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
-            newCommentLabel.setText("내용 : " + comment);
-            commentPanel.add(newCommentLabel);
-            commentPanel.add(Box.createRigidArea(new Dimension(0, 10))); // 댓글 간 간격 조정
+//            JLabel newCommentLabel = new JLabel();
+//            newCommentLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
+//            newCommentLabel.setText("내용 : " + comment);
+//            commentPanel.add(newCommentLabel);
+//            commentPanel.add(Box.createRigidArea(new Dimension(0, 10))); // 댓글 간 간격 조정
 
             JOptionPane.showMessageDialog(getCommentsFrame, "댓글이 입력되었습니다.");
             getCommentsFrame.dispose(); // 댓글 페이지 닫기

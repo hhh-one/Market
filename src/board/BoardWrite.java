@@ -55,7 +55,7 @@ public class BoardWrite extends JFrame implements ActionListener {
 		JPanel pricePanel = new JPanel();
 		price = new JLabel("가격");
 		//		price.setPreferredSize(new Dimension(10, 20));
-		productPrice = new JTextField(15);
+		productPrice = new JTextField(20);
 		//		productPrice.setPreferredSize(new Dimension(10, 10));
 		pricePanel.add(price);
 		pricePanel.add(productPrice);

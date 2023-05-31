@@ -63,7 +63,7 @@ public class SellList extends JFrame {
 		});
 		
 		add(backBtn);
-		titleLabel = new JLabel("찜 목록");
+		titleLabel = new JLabel("판매내역");
 		Font titleFont = new Font("Malgun Gothic", Font.BOLD, 16);
 		titleLabel.setFont(titleFont);
 

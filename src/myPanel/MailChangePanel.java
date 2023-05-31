@@ -1,31 +1,23 @@
 package myPanel;
 
-import java.awt.CardLayout;
-import java.awt.Color;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.FocusEvent;
-import java.awt.event.FocusListener;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
+import java.awt.*;
+import java.awt.event.*;
+import java.sql.*;
 
-import javax.swing.JButton;
-import javax.swing.JComboBox;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JTextField;
+import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
 import dao.MyHomeDAO;
 import db_info.DBProperties;
-import mypage.*;
+import frame.LoginRegisterFrame;
 import vo.MyHomeVO;
 
 public class MailChangePanel extends JPanel {
-	private MyHomeVO vo = new MyHomeDAO().getHome("AAA");
+	private MyHomeVO vo = new MyHomeDAO().getHome(LoginRegisterFrame.getLoginUser().getACCOUNT_ID());
+	private JPanel card;
+	private CardLayout layout;
+	private InfoPannel info;
 	
 	private static String url = DBProperties.URL;
 	private static String uid = DBProperties.UID;
@@ -42,7 +34,11 @@ public class MailChangePanel extends JPanel {
 	private JTextField txtMail;
 	private String mail;
 
-	public MailChangePanel() {
+	public MailChangePanel(JPanel card, InfoPannel info) {
+		this.card = card;
+		layout = (CardLayout) card.getLayout();
+		this.info = info;
+		
 		setLayout(null);
 		setBackground(Color.white);
 		setSize(400, 600);
@@ -63,7 +59,7 @@ public class MailChangePanel extends JPanel {
 		txtMail.setBounds(20, 150, 160, 40);
 		txtMail.setText("이메일 주소");
 
-		// 입력 전에는 '이메일 주소'가 떠있고, 입력을 하기위해 클릭시, '이메일 주소'가 사라짐
+		// 입력 전에는 '이메일 주소'가 떠있고, 입력 하기위해 클릭시, '이메일 주소'가 사라짐
 		txtMail.addFocusListener(new FocusListener() {
 			@Override
 			public void focusLost(FocusEvent e) {
@@ -97,7 +93,7 @@ public class MailChangePanel extends JPanel {
 		});
 
 		// 드롭박스 버튼을 설정
-		String[] options = {"@gmail.com", "@naver.com", "@daum.net"};
+		String[] options = {"...선택", "@gmail.com", "@naver.com", "@daum.net"};
 		Box = new JComboBox<>(options);
 		Box.setBounds(200, 150, 160, 40);
 		Box.addActionListener(new ActionListener() {
@@ -131,8 +127,8 @@ public class MailChangePanel extends JPanel {
 				Connection conn = null;
 				PreparedStatement pstmt = null;
 
-				String sql = "UPDATE account SET e_mail = ?\r\n"
-						+ "WHERE account_id = ?";
+				String sql = "UPDATE accounts SET email = ?\r\n"
+						   + "WHERE account_id = ?";
 
 				try {
 					Class.forName("oracle.jdbc.driver.OracleDriver");
@@ -144,19 +140,18 @@ public class MailChangePanel extends JPanel {
 					// 입력받은 mail을 sql문에
 					pstmt.setString(1, mail);
 					// 입력받은 mail이 같다면 -> 예외 발생하며 문자열 나타나게
-					if(mail.equals(vo.getE_mail())) {
-						throw new Exception("이메일이 이미 사용중입니다");
-					} else {
+					if(!mail.equals(vo.getE_mail())) {
+						accountId = vo.getAccount_id();
+						pstmt.setString(2, accountId);
+						pstmt.executeUpdate();
+						// 메일이 변경되면, 정보 수정 패널로 이동
+						txtMail.setText("이메일 주소");
 						second.setVisible(false);
+						info.updatePanel();
+						layout.show(card, "Info");
+					} else {
+						throw new Exception("이메일이 이미 사용중입니다");
 					}
-
-					accountId = vo.getAccount_id();
-					pstmt.setString(2, accountId);
-
-					pstmt.executeUpdate();
-					// 메일 변경이 되면, 정보 수정 패널로 이동
-					CardLayout layout = (CardLayout) getParent().getLayout();
-					layout.show(getParent(), "Info");
 
 				} catch (Exception e1) {
 					second.setVisible(true);
@@ -178,8 +173,8 @@ public class MailChangePanel extends JPanel {
 		backBtn.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				CardLayout layout = (CardLayout) getParent().getLayout();
-				layout.show(getParent(), "Info");
+				txtMail.setText("이메일 주소");
+				layout.show(card, "Info");
 			}
 		});
 
@@ -199,10 +194,12 @@ public class MailChangePanel extends JPanel {
 	// 텍스트필드에 값이 입력되었는지를 판단하는 메서드
 	private void checkText() {
 		String txt = txtMail.getText();
+		// 텍스트 필드가 "이메일 주소" 또는 비어있다면 버튼 비활성화
 		if(txt.equals("이메일 주소") || txt.isEmpty() ) {
 			change.setEnabled(false);
 		} else {
 			change.setEnabled(true);
 		}	
 	}
+	
 }

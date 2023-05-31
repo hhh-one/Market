@@ -11,27 +11,35 @@ import javax.swing.event.*;
 
 import dao.MyHomeDAO;
 import db_info.DBProperties;
-import mypage.*;
+import frame.LoginRegisterFrame;
 import vo.MyHomeVO;
+
 // 번호 변경 패널
 public class NumberChangePanel extends JPanel{
-	private MyHomeVO vo = new MyHomeDAO().getHome("AAA");
+	private MyHomeVO vo = new MyHomeDAO().getHome(LoginRegisterFrame.getLoginUser().getACCOUNT_ID());
+	private CardLayout layout;
+	private JPanel card;
+	private InfoPannel info;
 	
 	private String url = DBProperties.URL;
 	private String uid = DBProperties.UID;
 	private String upw = DBProperties.UPW;
 	private String accountId;
 	private String phone_num;
-
-	private JButton backBtn = new JButton("<");
+	
 	private JLabel main;
 	private JLabel first;
 	private JLabel second;
+	private JButton backBtn = new JButton("<");
 	private JButton change;
 	
 	private JTextField txtNumber;
 	
-	public NumberChangePanel() {
+	public NumberChangePanel(JPanel card, InfoPannel info) {
+		this.card = card;
+		layout = (CardLayout) card.getLayout();
+		this.info = info;
+		
 		setLayout(null);
 		setBackground(Color.white);
 		setSize(400, 600);
@@ -45,18 +53,17 @@ public class NumberChangePanel extends JPanel{
 		first.setHorizontalAlignment(JLabel.LEFT);
 		first.setBounds(20, 80, 200, 35);
 		add(first);
-		// 두번째 라벨
-		second = new JLabel("현재 등록된 휴대폰 번호는 " + vo.getPhone_number() + "이에요");
+		// 안내 라벨
+		second = new JLabel("- 을 제외하고 입력해주세요");
 		second.setHorizontalAlignment(JLabel.LEFT);
 		second.setBounds(20, 130, 300, 20);
 		add(second);
 		// 번호를 입력받을 텍스트 필드
 		txtNumber = new JTextField(11);
 		txtNumber.setDocument(new LimitDocument(11)); // 입력 글자 제한
-		
 		txtNumber.setBounds(20, 160, 352, 35);
 		txtNumber.setText("휴대폰 번호");
-		// 텍스트 필드가 비어있으면 '휴대폰 번호'를 띄우고, 입력 시 사라지게
+		// 텍스트 필드가 비어있으면 '휴대폰 번호'를 띄우고, 입력 시 사라지게 설정
 		txtNumber.addFocusListener(new FocusListener() {
 			@Override
 			public void focusLost(FocusEvent e) {
@@ -104,7 +111,7 @@ public class NumberChangePanel extends JPanel{
 				Connection conn = null;
 				PreparedStatement pstmt = null;
 				
-				String sql = "UPDATE account SET phone_number = ?\r\n"
+				String sql = "UPDATE accounts SET phone_number = ?\r\n"
 						   + "WHERE account_id = ?";
 				
 				try {
@@ -125,9 +132,9 @@ public class NumberChangePanel extends JPanel{
 					pstmt.setString(2, accountId);
 					
 					pstmt.executeUpdate();
-					
-					CardLayout layout = (CardLayout) getParent().getLayout();
-					layout.show(getParent(), "Info");
+					txtNumber.setText("휴대폰 번호");
+					info.updatePanel();
+					layout.show(card, "Info");
 					
 				} catch (Exception e2) {
 					e2.printStackTrace();
@@ -151,8 +158,8 @@ public class NumberChangePanel extends JPanel{
 		backBtn.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				CardLayout layout = (CardLayout) getParent().getLayout();
-				layout.show(getParent(), "Info");
+				txtNumber.setText("휴대폰 번호");
+				layout.show(card, "Info");
 			}
 		});
 		
@@ -176,4 +183,5 @@ public class NumberChangePanel extends JPanel{
 			change.setEnabled(true);
 		}	
 	}
+	
 }

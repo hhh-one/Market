@@ -10,6 +10,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.*;
 
+import frame.LoginRegisterFrame;
 import frame.MainFrame;
 
 // 게시글 페이지, 댓글 페이지, 찜하기, 댓글 작성하는 곳?,
@@ -352,18 +353,18 @@ public class MarketDAO extends JFrame implements ActionListener {
             String comment = commentText.getText();
             String sql = "INSERT INTO COMMENTS VALUES (COMMENTS_SEQ.NEXTVAL, ?, ?, ?, sysdate)";
             PreparedStatement statement = conn.prepareStatement(sql);
-            statement.setString(1, comment); // 상품번호 Pull
-            statement.setString(2, "chanhan"); // 아이디 임시값
+            statement.setString(1, MainFrame.getBoardUser().getBOARD_NUM()); // 상품번호 Pull
+            statement.setString(2, LoginRegisterFrame.getLoginUser().getACCOUNT_ID()); // 아이디 임시값
             statement.setString(3, comment); // 댓글
             statement.executeUpdate();
             statement.close();
 
             // 댓글을 추가한 후 화면에 표시합니다.
-            JLabel newCommentLabel = new JLabel();
-            newCommentLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
-            newCommentLabel.setText("내용 : " + comment);
-            commentPanel.add(newCommentLabel);
-            commentPanel.add(Box.createRigidArea(new Dimension(0, 10))); // 댓글 간 간격 조정
+//            JLabel newCommentLabel = new JLabel();
+//            newCommentLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
+//            newCommentLabel.setText("내용 : " + comment);
+//            commentPanel.add(newCommentLabel);
+//            commentPanel.add(Box.createRigidArea(new Dimension(0, 10))); // 댓글 간 간격 조정
 
             conn.close();
         } catch (Exception ex) {

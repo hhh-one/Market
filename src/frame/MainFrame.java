@@ -21,6 +21,7 @@ public class MainFrame extends JFrame {
     private JFrame postFrame; // "Post" 프레임을 저장하기 위한 멤버 변수 선언
     private MarketDAO marketDAO;
     private JFrame myPageFrame;
+    private static MainVO boardUser;
 
     public MainFrame(MainDAO boardDAO) {
         this.mainDAO = boardDAO;
@@ -114,6 +115,7 @@ public class MainFrame extends JFrame {
     	BoardWrite writeFrame = new BoardWrite();
 
         writeFrame.setVisible(true);
+        setVisible(false);
     }
 
     private void openMyPageFrame() {
@@ -124,6 +126,7 @@ public class MainFrame extends JFrame {
     }
 
     private void openPostFrame(MainVO board) {
+    	boardUser = board;
         if (postFrame == null) {
             postFrame = new JFrame();
             postFrame.setTitle("글보기");
@@ -131,9 +134,7 @@ public class MainFrame extends JFrame {
             postFrame.setSize(400, 600);
             postFrame.setLocationRelativeTo(this); // BoardFrame을 기준으로 프레임을 중앙에 배치
         }
-
-        JFrame aa = new JFrame();
-
+        
         // 기존 프레임의 컴포넌트 제거
         postFrame.getContentPane().removeAll();
 
@@ -156,4 +157,12 @@ public class MainFrame extends JFrame {
         MainDAO boardDAO = new MainDAO(dbUrl, dbUsername, dbPassword);
         SwingUtilities.invokeLater(() -> new MainFrame(boardDAO));
     }
+
+	public static MainVO getBoardUser() {
+		return boardUser;
+	}
+
+	public static void setBoardUser(MainVO boardUser) {
+		MainFrame.boardUser = boardUser;
+	}
 }

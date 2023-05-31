@@ -58,9 +58,7 @@ public class LikeList extends JFrame {
 		backBtn.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				MyFrame my = new MyFrame();
-				my.setVisible(true);
-				setVisible(false);
+				dispose();
 			}
 		});
 		

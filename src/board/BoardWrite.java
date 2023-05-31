@@ -82,6 +82,7 @@ public class BoardWrite extends JFrame {
 		});
 		
 		price = new JLabel("가격");
+
 		gbc.gridx = 0;
 		gbc.gridy++;
 		gbc.fill = GridBagConstraints.NONE;

@@ -165,7 +165,7 @@ public class MarketDAO extends JFrame implements ActionListener {
                         conn = DriverManager.getConnection(url, uid, upw);
                         String checkSql = "SELECT * FROM LIKES WHERE ACCOUNT_ID = ? AND BOARD_NUM = ?";
                         PreparedStatement checkStatement = conn.prepareStatement(checkSql);
-                        checkStatement.setString(1, "chanhan"); // 전달 받은 ID로 입력
+                        checkStatement.setString(1, LoginRegisterFrame.getLoginUser().getACCOUNT_ID()); // 전달 받은 ID로 입력
                         checkStatement.setString(2, pull);
                         ResultSet checkResult = checkStatement.executeQuery();
 
@@ -174,7 +174,7 @@ public class MarketDAO extends JFrame implements ActionListener {
                         } else {
                             String insertSql = "INSERT INTO LIKES VALUES (?, ?)";
                             PreparedStatement insertStatement = conn.prepareStatement(insertSql);
-                            insertStatement.setString(1, "chanhan");
+                            insertStatement.setString(1, LoginRegisterFrame.getLoginUser().getACCOUNT_ID());
                             insertStatement.setString(2, pull);
                             int rowsInserted = insertStatement.executeUpdate();
 
@@ -239,6 +239,10 @@ public class MarketDAO extends JFrame implements ActionListener {
         infoPanel.add(productNameLabel, BorderLayout.NORTH);
         infoPanel.add(priceLabel, BorderLayout.CENTER);
         getCommentsFrame.add(infoPanel, BorderLayout.NORTH);
+
+        // 댓글을 표기할 패널 초기화
+        commentPanel = new JPanel();
+        commentPanel.setLayout(new BoxLayout(commentPanel, BoxLayout.Y_AXIS));
 
         try {
             conn = DriverManager.getConnection(url, uid, upw);
@@ -343,7 +347,6 @@ public class MarketDAO extends JFrame implements ActionListener {
         setVisible(false);
     }
 
-
     // 댓글 페이지 (쓰기)
     public void actionPerformed(ActionEvent e) {
         Connection conn = null;
@@ -354,7 +357,7 @@ public class MarketDAO extends JFrame implements ActionListener {
             String sql = "INSERT INTO COMMENTS VALUES (COMMENTS_SEQ.NEXTVAL, ?, ?, ?, sysdate)";
             PreparedStatement statement = conn.prepareStatement(sql);
             statement.setString(1, MainFrame.getBoardUser().getBOARD_NUM()); // 상품번호 Pull
-            statement.setString(2, LoginRegisterFrame.getLoginUser().getACCOUNT_ID()); // 아이디 임시값
+            statement.setString(2, LoginRegisterFrame.getLoginUser().getACCOUNT_ID());
             statement.setString(3, comment); // 댓글
             statement.executeUpdate();
             statement.close();
@@ -365,6 +368,11 @@ public class MarketDAO extends JFrame implements ActionListener {
 //            newCommentLabel.setText("내용 : " + comment);
 //            commentPanel.add(newCommentLabel);
 //            commentPanel.add(Box.createRigidArea(new Dimension(0, 10))); // 댓글 간 간격 조정
+
+            JOptionPane.showMessageDialog(getCommentsFrame, "댓글이 입력되었습니다.");
+            getCommentsFrame.dispose(); // 댓글 페이지 닫기
+            getComments(MainFrame.getBoardUser().getBOARD_NUM());
+
 
             conn.close();
         } catch (Exception ex) {

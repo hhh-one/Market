@@ -62,7 +62,7 @@ public class MarketDAO extends JFrame implements ActionListener {
 
         try {
             conn = DriverManager.getConnection(url, uid, upw);
-            String sql = "SELECT * FROM BOARDS WHERE BOARD_NUM = ?";
+            String sql = "SELECT * FROM BOARDS B JOIN ACCOUNTS A ON B.ACCOUNT_ID = A.ACCOUNT_ID WHERE BOARD_NUM = ?";
             PreparedStatement statement = conn.prepareStatement(sql);
             statement.setString(1, pull);
             ResultSet resultSet = statement.executeQuery();
@@ -147,6 +147,7 @@ public class MarketDAO extends JFrame implements ActionListener {
                 idLabel.setText("작성자: " + resultSet.getString("account_id"));
                 dateLabel.setText("등록날짜: " + resultSet.getString("board_date"));
                 sellLabel.setText("판매여부: " + resultSet.getString("product_sell"));
+                locationLabel.setText("거래 지역 : " + resultSet.getString("address"));
                 descriptionArea.setText(resultSet.getString("product_content"));
             } else {
                 JOptionPane.showMessageDialog(this, "게시글을 찾을 수 없습니다.");

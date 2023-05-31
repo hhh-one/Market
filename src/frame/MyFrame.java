@@ -32,7 +32,6 @@ public class MyFrame extends JFrame {
 				
 				JFrame currentFrame = (JFrame) e.getWindow();
 				currentFrame.dispose();
-				
 			}
 			
 		});

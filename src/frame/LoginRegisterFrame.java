@@ -7,6 +7,7 @@ import java.awt.Image;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
@@ -50,7 +51,9 @@ public class LoginRegisterFrame extends JFrame {
         loginPanel.setLayout(new GridBagLayout());
         
         // 이미지 삽입
-        ImageIcon imageIcon = new ImageIcon("C:\\Users\\taeju\\eclipse-workspace\\Market\\market.png");
+        File file = new File(".");
+		String rootPath = file.getAbsolutePath();
+        ImageIcon imageIcon = new ImageIcon(rootPath + "/images/market.png");
         Image image = imageIcon.getImage().getScaledInstance(300, 200, Image.SCALE_SMOOTH);
         ImageIcon scaledImageIcon = new ImageIcon(image);
        

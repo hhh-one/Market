@@ -30,9 +30,7 @@ public class MainFrame extends JFrame {
     public static void setBoardUser(MainVO boardUser) {
         MainFrame.boardUser = boardUser;
     }
-
-    private static MainVO boardUser;
-
+    
     public MainFrame(MainDAO boardDAO) {
         this.mainDAO = boardDAO;
         this.marketDAO = new MarketDAO();
@@ -167,12 +165,4 @@ public class MainFrame extends JFrame {
         MainDAO boardDAO = new MainDAO(dbUrl, dbUsername, dbPassword);
         SwingUtilities.invokeLater(() -> new MainFrame(boardDAO));
     }
-
-	public static MainVO getBoardUser() {
-		return boardUser;
-	}
-
-	public static void setBoardUser(MainVO boardUser) {
-		MainFrame.boardUser = boardUser;
-	}
 }
